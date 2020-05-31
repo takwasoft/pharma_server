@@ -19,7 +19,7 @@ class ManufacturersController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = Manufacturer::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,9 @@ class ManufacturersController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('manufacturers.index');
+
+
+
 
 
     }
@@ -49,7 +49,7 @@ class ManufacturersController extends Controller
      */
     public function create()
     {
-        return view('manufacturers.create');
+
     }
 
     /**
@@ -70,9 +70,9 @@ class ManufacturersController extends Controller
                 ->store('uploads', 'public');
         }
 
-        Manufacturer::create($requestData);
+        $manufacturer=Manufacturer::create($requestData);
 
-        return redirect('manufacturers')->with('flash_message', 'Manufacturer added!');
+        return $manufacturer;
     }
 
     /**
@@ -86,7 +86,7 @@ class ManufacturersController extends Controller
     {
         $manufacturer = Manufacturer::findOrFail($id);
 
-        return view('manufacturers.show', compact('manufacturer'));
+            return $manufacturer;
     }
 
     /**
@@ -98,9 +98,7 @@ class ManufacturersController extends Controller
      */
     public function edit($id)
     {
-        $manufacturer = Manufacturer::findOrFail($id);
 
-        return view('manufacturers.edit', compact('manufacturer'));
     }
 
     /**
@@ -125,7 +123,7 @@ class ManufacturersController extends Controller
         $manufacturer = Manufacturer::findOrFail($id);
         $manufacturer->update($requestData);
 
-        return redirect('manufacturers')->with('flash_message', 'Manufacturer updated!');
+        return $manufacturer;
     }
 
     /**
@@ -139,6 +137,5 @@ class ManufacturersController extends Controller
     {
         Manufacturer::destroy($id);
 
-        return redirect('manufacturers')->with('flash_message', 'Manufacturer deleted!');
     }
 }

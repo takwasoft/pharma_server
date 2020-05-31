@@ -19,7 +19,7 @@ class RolesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = Role::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class RolesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('roles.index');
+
 
 
     }
@@ -65,10 +63,10 @@ class RolesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
-        Role::create($requestData);
 
-        return redirect('roles')->with('flash_message', 'Role added!');
+        $role=Role::create($requestData);
+            return $role;
+
     }
 
     /**
@@ -82,7 +80,7 @@ class RolesController extends Controller
     {
         $role = Role::findOrFail($id);
 
-        return view('roles.show', compact('role'));
+        return $role;
     }
 
     /**
@@ -94,9 +92,7 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        $role = Role::findOrFail($id);
 
-        return view('roles.edit', compact('role'));
     }
 
     /**
@@ -113,11 +109,11 @@ class RolesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
+
         $role = Role::findOrFail($id);
         $role->update($requestData);
 
-        return redirect('roles')->with('flash_message', 'Role updated!');
+        return $role;
     }
 
     /**
@@ -131,6 +127,6 @@ class RolesController extends Controller
     {
         Role::destroy($id);
 
-        return redirect('roles')->with('flash_message', 'Role deleted!');
+
     }
 }

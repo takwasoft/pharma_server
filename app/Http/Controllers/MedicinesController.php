@@ -19,7 +19,7 @@ class MedicinesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = Medicine::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class MedicinesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('medicines.index');
+
 
 
     }
@@ -49,7 +47,6 @@ class MedicinesController extends Controller
      */
     public function create()
     {
-        return view('medicines.create');
     }
 
     /**
@@ -70,9 +67,9 @@ class MedicinesController extends Controller
                 ->store('uploads', 'public');
         }
 
-        Medicine::create($requestData);
+        $medicine=Medicine::create($requestData);
 
-        return redirect('medicines')->with('flash_message', 'Medicine added!');
+        return $medicine;
     }
 
     /**
@@ -86,7 +83,8 @@ class MedicinesController extends Controller
     {
         $medicine = Medicine::findOrFail($id);
 
-        return view('medicines.show', compact('medicine'));
+        return $medicine;
+
     }
 
     /**
@@ -98,9 +96,7 @@ class MedicinesController extends Controller
      */
     public function edit($id)
     {
-        $medicine = Medicine::findOrFail($id);
 
-        return view('medicines.edit', compact('medicine'));
     }
 
     /**
@@ -125,7 +121,8 @@ class MedicinesController extends Controller
         $medicine = Medicine::findOrFail($id);
         $medicine->update($requestData);
 
-        return redirect('medicines')->with('flash_message', 'Medicine updated!');
+        return $medicine;
+
     }
 
     /**
@@ -139,6 +136,6 @@ class MedicinesController extends Controller
     {
         Medicine::destroy($id);
 
-        return redirect('medicines')->with('flash_message', 'Medicine deleted!');
+
     }
 }

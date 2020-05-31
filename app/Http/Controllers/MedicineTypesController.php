@@ -19,7 +19,7 @@ class MedicineTypesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = MedicineType::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class MedicineTypesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('medicine-types.index');
+
 
 
     }
@@ -49,7 +47,7 @@ class MedicineTypesController extends Controller
      */
     public function create()
     {
-        return view('medicine-types.create');
+
     }
 
     /**
@@ -65,10 +63,11 @@ class MedicineTypesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
-        MedicineType::create($requestData);
 
-        return redirect('medicine-types')->with('flash_message', 'MedicineType added!');
+        $medicinetype=MedicineType::create($requestData);
+
+        return $medicinetype;
+
     }
 
     /**
@@ -82,7 +81,7 @@ class MedicineTypesController extends Controller
     {
         $medicinetype = MedicineType::findOrFail($id);
 
-        return view('medicine-types.show', compact('medicinetype'));
+        return $medicinetype;
     }
 
     /**
@@ -94,9 +93,7 @@ class MedicineTypesController extends Controller
      */
     public function edit($id)
     {
-        $medicinetype = MedicineType::findOrFail($id);
 
-        return view('medicine-types.edit', compact('medicinetype'));
     }
 
     /**
@@ -113,11 +110,11 @@ class MedicineTypesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
+
         $medicinetype = MedicineType::findOrFail($id);
         $medicinetype->update($requestData);
+        return $medicinetype;
 
-        return redirect('medicine-types')->with('flash_message', 'MedicineType updated!');
     }
 
     /**
@@ -131,6 +128,5 @@ class MedicineTypesController extends Controller
     {
         MedicineType::destroy($id);
 
-        return redirect('medicine-types')->with('flash_message', 'MedicineType deleted!');
     }
 }

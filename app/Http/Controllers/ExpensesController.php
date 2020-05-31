@@ -19,7 +19,7 @@ class ExpensesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = Expense::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class ExpensesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('expenses.index');
+
 
 
     }
@@ -49,7 +47,7 @@ class ExpensesController extends Controller
      */
     public function create()
     {
-        return view('expenses.create');
+
     }
 
     /**
@@ -70,9 +68,9 @@ class ExpensesController extends Controller
                 ->store('uploads', 'public');
         }
 
-        Expense::create($requestData);
+       $expense= Expense::create($requestData);
 
-        return redirect('expenses')->with('flash_message', 'Expense added!');
+        return $expense;
     }
 
     /**
@@ -86,7 +84,7 @@ class ExpensesController extends Controller
     {
         $expense = Expense::findOrFail($id);
 
-        return view('expenses.show', compact('expense'));
+        return $expense;
     }
 
     /**
@@ -98,9 +96,7 @@ class ExpensesController extends Controller
      */
     public function edit($id)
     {
-        $expense = Expense::findOrFail($id);
 
-        return view('expenses.edit', compact('expense'));
     }
 
     /**
@@ -125,7 +121,7 @@ class ExpensesController extends Controller
         $expense = Expense::findOrFail($id);
         $expense->update($requestData);
 
-        return redirect('expenses')->with('flash_message', 'Expense updated!');
+        return $expense;
     }
 
     /**
@@ -139,6 +135,5 @@ class ExpensesController extends Controller
     {
         Expense::destroy($id);
 
-        return redirect('expenses')->with('flash_message', 'Expense deleted!');
     }
 }

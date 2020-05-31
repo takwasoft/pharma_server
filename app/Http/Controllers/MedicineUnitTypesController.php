@@ -19,7 +19,7 @@ class MedicineUnitTypesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = MedicineUnitType::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class MedicineUnitTypesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('medicine-unit-types.index');
+
 
 
     }
@@ -49,7 +47,6 @@ class MedicineUnitTypesController extends Controller
      */
     public function create()
     {
-        return view('medicine-unit-types.create');
     }
 
     /**
@@ -61,12 +58,11 @@ class MedicineUnitTypesController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $requestData = $request->all();
-        
-        MedicineUnitType::create($requestData);
 
-        return redirect('medicine-unit-types')->with('flash_message', 'MedicineUnitType added!');
+        $requestData = $request->all();
+
+        $medicineunittype= MedicineUnitType::create($requestData);
+        return $medicineunittype;
     }
 
     /**
@@ -79,8 +75,8 @@ class MedicineUnitTypesController extends Controller
     public function show($id)
     {
         $medicineunittype = MedicineUnitType::findOrFail($id);
+        return $medicineunittype;
 
-        return view('medicine-unit-types.show', compact('medicineunittype'));
     }
 
     /**
@@ -92,9 +88,7 @@ class MedicineUnitTypesController extends Controller
      */
     public function edit($id)
     {
-        $medicineunittype = MedicineUnitType::findOrFail($id);
 
-        return view('medicine-unit-types.edit', compact('medicineunittype'));
     }
 
     /**
@@ -107,13 +101,13 @@ class MedicineUnitTypesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         $requestData = $request->all();
-        
+
         $medicineunittype = MedicineUnitType::findOrFail($id);
         $medicineunittype->update($requestData);
+        return $medicineunittype;
 
-        return redirect('medicine-unit-types')->with('flash_message', 'MedicineUnitType updated!');
     }
 
     /**
@@ -127,6 +121,5 @@ class MedicineUnitTypesController extends Controller
     {
         MedicineUnitType::destroy($id);
 
-        return redirect('medicine-unit-types')->with('flash_message', 'MedicineUnitType deleted!');
     }
 }

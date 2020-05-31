@@ -19,7 +19,7 @@ class ShelvesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = Shelf::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class ShelvesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('shelves.index');
+
 
 
     }
@@ -65,10 +63,10 @@ class ShelvesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
-        Shelf::create($requestData);
 
-        return redirect('shelves')->with('flash_message', 'Shelf added!');
+        $shelf= Shelf::create($requestData);
+
+        return $shelf;
     }
 
     /**
@@ -82,7 +80,7 @@ class ShelvesController extends Controller
     {
         $shelf = Shelf::findOrFail($id);
 
-        return view('shelves.show', compact('shelf'));
+        return $shelf;
     }
 
     /**
@@ -94,9 +92,7 @@ class ShelvesController extends Controller
      */
     public function edit($id)
     {
-        $shelf = Shelf::findOrFail($id);
 
-        return view('shelves.edit', compact('shelf'));
     }
 
     /**
@@ -113,11 +109,11 @@ class ShelvesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
+
         $shelf = Shelf::findOrFail($id);
         $shelf->update($requestData);
 
-        return redirect('shelves')->with('flash_message', 'Shelf updated!');
+        return $shelf;
     }
 
     /**
@@ -131,6 +127,5 @@ class ShelvesController extends Controller
     {
         Shelf::destroy($id);
 
-        return redirect('shelves')->with('flash_message', 'Shelf deleted!');
     }
 }

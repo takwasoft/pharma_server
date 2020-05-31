@@ -19,7 +19,7 @@ class UnitTypesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = UnitType::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class UnitTypesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('unit-types.index');
+
 
 
     }
@@ -49,7 +47,6 @@ class UnitTypesController extends Controller
      */
     public function create()
     {
-        return view('unit-types.create');
     }
 
     /**
@@ -65,10 +62,10 @@ class UnitTypesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
-        UnitType::create($requestData);
 
-        return redirect('unit-types')->with('flash_message', 'UnitType added!');
+        $unittype= UnitType::create($requestData);
+
+        return $unittype;
     }
 
     /**
@@ -82,7 +79,7 @@ class UnitTypesController extends Controller
     {
         $unittype = UnitType::findOrFail($id);
 
-        return view('unit-types.show', compact('unittype'));
+        return $unittype;
     }
 
     /**
@@ -94,9 +91,7 @@ class UnitTypesController extends Controller
      */
     public function edit($id)
     {
-        $unittype = UnitType::findOrFail($id);
 
-        return view('unit-types.edit', compact('unittype'));
     }
 
     /**
@@ -113,11 +108,11 @@ class UnitTypesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
+
         $unittype = UnitType::findOrFail($id);
         $unittype->update($requestData);
 
-        return redirect('unit-types')->with('flash_message', 'UnitType updated!');
+        return $unittype;
     }
 
     /**
@@ -131,6 +126,5 @@ class UnitTypesController extends Controller
     {
         UnitType::destroy($id);
 
-        return redirect('unit-types')->with('flash_message', 'UnitType deleted!');
     }
 }

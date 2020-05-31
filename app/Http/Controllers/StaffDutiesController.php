@@ -19,7 +19,7 @@ class StaffDutiesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = StaffDuty::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,6 @@ class StaffDutiesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('staff-duties.index');
 
 
     }
@@ -49,7 +46,6 @@ class StaffDutiesController extends Controller
      */
     public function create()
     {
-        return view('staff-duties.create');
     }
 
     /**
@@ -61,12 +57,12 @@ class StaffDutiesController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $requestData = $request->all();
-        
-        StaffDuty::create($requestData);
 
-        return redirect('staff-duties')->with('flash_message', 'StaffDuty added!');
+        $requestData = $request->all();
+
+        $staffduty =StaffDuty::create($requestData);
+
+        return $staffduty ;
     }
 
     /**
@@ -80,7 +76,7 @@ class StaffDutiesController extends Controller
     {
         $staffduty = StaffDuty::findOrFail($id);
 
-        return view('staff-duties.show', compact('staffduty'));
+        return $staffduty ;
     }
 
     /**
@@ -92,9 +88,7 @@ class StaffDutiesController extends Controller
      */
     public function edit($id)
     {
-        $staffduty = StaffDuty::findOrFail($id);
 
-        return view('staff-duties.edit', compact('staffduty'));
     }
 
     /**
@@ -107,13 +101,13 @@ class StaffDutiesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+
         $requestData = $request->all();
-        
+
         $staffduty = StaffDuty::findOrFail($id);
         $staffduty->update($requestData);
 
-        return redirect('staff-duties')->with('flash_message', 'StaffDuty updated!');
+        return $staffduty ;
     }
 
     /**
@@ -127,6 +121,5 @@ class StaffDutiesController extends Controller
     {
         StaffDuty::destroy($id);
 
-        return redirect('staff-duties')->with('flash_message', 'StaffDuty deleted!');
     }
 }

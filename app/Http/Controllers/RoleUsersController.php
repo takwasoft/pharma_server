@@ -19,7 +19,7 @@ class RoleUsersController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = RoleUser::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class RoleUsersController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('role-users.index');
+
 
 
     }
@@ -49,7 +47,6 @@ class RoleUsersController extends Controller
      */
     public function create()
     {
-        return view('role-users.create');
     }
 
     /**
@@ -66,10 +63,10 @@ class RoleUsersController extends Controller
 			'role_id' => 'required'
 		]);
         $requestData = $request->all();
-        
-        RoleUser::create($requestData);
 
-        return redirect('role-users')->with('flash_message', 'RoleUser added!');
+        $roleuser=RoleUser::create($requestData);
+            return $roleuser;
+
     }
 
     /**
@@ -83,7 +80,7 @@ class RoleUsersController extends Controller
     {
         $roleuser = RoleUser::findOrFail($id);
 
-        return view('role-users.show', compact('roleuser'));
+        return $roleuser;
     }
 
     /**
@@ -95,9 +92,7 @@ class RoleUsersController extends Controller
      */
     public function edit($id)
     {
-        $roleuser = RoleUser::findOrFail($id);
 
-        return view('role-users.edit', compact('roleuser'));
     }
 
     /**
@@ -115,11 +110,11 @@ class RoleUsersController extends Controller
 			'role_id' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $roleuser = RoleUser::findOrFail($id);
         $roleuser->update($requestData);
 
-        return redirect('role-users')->with('flash_message', 'RoleUser updated!');
+        return $roleuser;
     }
 
     /**
@@ -133,6 +128,5 @@ class RoleUsersController extends Controller
     {
         RoleUser::destroy($id);
 
-        return redirect('role-users')->with('flash_message', 'RoleUser deleted!');
     }
 }

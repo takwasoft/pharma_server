@@ -19,7 +19,7 @@ class SuppliersController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = Supplier::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class SuppliersController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('suppliers.index');
+
 
 
     }
@@ -49,7 +47,6 @@ class SuppliersController extends Controller
      */
     public function create()
     {
-        return view('suppliers.create');
     }
 
     /**
@@ -65,10 +62,10 @@ class SuppliersController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
-        Supplier::create($requestData);
 
-        return redirect('suppliers')->with('flash_message', 'Supplier added!');
+        $supplier=Supplier::create($requestData);
+
+        return $supplier;
     }
 
     /**
@@ -94,9 +91,7 @@ class SuppliersController extends Controller
      */
     public function edit($id)
     {
-        $supplier = Supplier::findOrFail($id);
 
-        return view('suppliers.edit', compact('supplier'));
     }
 
     /**
@@ -113,11 +108,11 @@ class SuppliersController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
+
         $supplier = Supplier::findOrFail($id);
         $supplier->update($requestData);
 
-        return redirect('suppliers')->with('flash_message', 'Supplier updated!');
+        return $supplier;
     }
 
     /**
@@ -131,6 +126,5 @@ class SuppliersController extends Controller
     {
         Supplier::destroy($id);
 
-        return redirect('suppliers')->with('flash_message', 'Supplier deleted!');
     }
 }

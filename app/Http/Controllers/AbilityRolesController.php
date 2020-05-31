@@ -19,7 +19,7 @@ class AbilityRolesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = AbilityRole::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class AbilityRolesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('ability-roles.index');
+
 
 
     }
@@ -49,7 +47,7 @@ class AbilityRolesController extends Controller
      */
     public function create()
     {
-        return view('ability-roles.create');
+
     }
 
     /**
@@ -66,10 +64,10 @@ class AbilityRolesController extends Controller
 			'ability_id' => 'required'
 		]);
         $requestData = $request->all();
-        
-        AbilityRole::create($requestData);
 
-        return redirect('ability-roles')->with('flash_message', 'AbilityRole added!');
+        $abilityRole=AbilityRole::create($requestData);
+
+        return $abilityRole;
     }
 
     /**
@@ -83,7 +81,7 @@ class AbilityRolesController extends Controller
     {
         $abilityrole = AbilityRole::findOrFail($id);
 
-        return view('ability-roles.show', compact('abilityrole'));
+        return $abilityrole;
     }
 
     /**
@@ -95,9 +93,7 @@ class AbilityRolesController extends Controller
      */
     public function edit($id)
     {
-        $abilityrole = AbilityRole::findOrFail($id);
 
-        return view('ability-roles.edit', compact('abilityrole'));
     }
 
     /**
@@ -115,11 +111,11 @@ class AbilityRolesController extends Controller
 			'ability_id' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $abilityrole = AbilityRole::findOrFail($id);
         $abilityrole->update($requestData);
 
-        return redirect('ability-roles')->with('flash_message', 'AbilityRole updated!');
+        return $abilityrole;
     }
 
     /**
@@ -133,6 +129,5 @@ class AbilityRolesController extends Controller
     {
         AbilityRole::destroy($id);
 
-        return redirect('ability-roles')->with('flash_message', 'AbilityRole deleted!');
     }
 }

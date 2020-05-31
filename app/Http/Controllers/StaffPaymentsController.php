@@ -19,7 +19,6 @@ class StaffPaymentsController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
             $data = StaffPayment::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +34,7 @@ class StaffPaymentsController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('staff-payments.index');
+
 
 
     }
@@ -49,7 +46,6 @@ class StaffPaymentsController extends Controller
      */
     public function create()
     {
-        return view('staff-payments.create');
     }
 
     /**
@@ -65,10 +61,10 @@ class StaffPaymentsController extends Controller
 			'salary' => 'required'
 		]);
         $requestData = $request->all();
-        
-        StaffPayment::create($requestData);
 
-        return redirect('staff-payments')->with('flash_message', 'StaffPayment added!');
+        $staffpayment=StaffPayment::create($requestData);
+
+        return $staffpayment;
     }
 
     /**
@@ -82,7 +78,7 @@ class StaffPaymentsController extends Controller
     {
         $staffpayment = StaffPayment::findOrFail($id);
 
-        return view('staff-payments.show', compact('staffpayment'));
+        return $staffpayment;
     }
 
     /**
@@ -94,9 +90,7 @@ class StaffPaymentsController extends Controller
      */
     public function edit($id)
     {
-        $staffpayment = StaffPayment::findOrFail($id);
 
-        return view('staff-payments.edit', compact('staffpayment'));
     }
 
     /**
@@ -113,11 +107,11 @@ class StaffPaymentsController extends Controller
 			'salary' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $staffpayment = StaffPayment::findOrFail($id);
         $staffpayment->update($requestData);
 
-        return redirect('staff-payments')->with('flash_message', 'StaffPayment updated!');
+        return $staffpayment;
     }
 
     /**
@@ -131,6 +125,5 @@ class StaffPaymentsController extends Controller
     {
         StaffPayment::destroy($id);
 
-        return redirect('staff-payments')->with('flash_message', 'StaffPayment deleted!');
     }
 }

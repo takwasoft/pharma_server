@@ -19,7 +19,7 @@ class StaffsController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = Staff::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class StaffsController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('staffs.index');
+
 
 
     }
@@ -49,7 +47,6 @@ class StaffsController extends Controller
      */
     public function create()
     {
-        return view('staffs.create');
     }
 
     /**
@@ -70,9 +67,9 @@ class StaffsController extends Controller
                 ->store('uploads', 'public');
         }
 
-        Staff::create($requestData);
+        $staff=Staff::create($requestData);
 
-        return redirect('staffs')->with('flash_message', 'Staff added!');
+        return $staff;
     }
 
     /**
@@ -98,9 +95,7 @@ class StaffsController extends Controller
      */
     public function edit($id)
     {
-        $staff = Staff::findOrFail($id);
 
-        return view('staffs.edit', compact('staff'));
     }
 
     /**
@@ -125,7 +120,7 @@ class StaffsController extends Controller
         $staff = Staff::findOrFail($id);
         $staff->update($requestData);
 
-        return redirect('staffs')->with('flash_message', 'Staff updated!');
+        return $staff;
     }
 
     /**
@@ -139,6 +134,5 @@ class StaffsController extends Controller
     {
         Staff::destroy($id);
 
-        return redirect('staffs')->with('flash_message', 'Staff deleted!');
     }
 }

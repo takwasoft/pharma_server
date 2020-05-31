@@ -19,7 +19,6 @@ class AbilitiesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
             $data = Ability::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +34,7 @@ class AbilitiesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('abilities.index');
+
 
 
     }
@@ -49,7 +46,7 @@ class AbilitiesController extends Controller
      */
     public function create()
     {
-        return view('abilities.create');
+
     }
 
     /**
@@ -65,10 +62,10 @@ class AbilitiesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
-        Ability::create($requestData);
 
-        return redirect('abilities')->with('flash_message', 'Ability added!');
+        $ability=Ability::create($requestData);
+            return response()->json($ability);
+
     }
 
     /**
@@ -82,7 +79,7 @@ class AbilitiesController extends Controller
     {
         $ability = Ability::findOrFail($id);
 
-        return view('abilities.show', compact('ability'));
+        return $ability;
     }
 
     /**
@@ -94,9 +91,7 @@ class AbilitiesController extends Controller
      */
     public function edit($id)
     {
-        $ability = Ability::findOrFail($id);
 
-        return view('abilities.edit', compact('ability'));
     }
 
     /**
@@ -113,11 +108,11 @@ class AbilitiesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
+
         $ability = Ability::findOrFail($id);
         $ability->update($requestData);
 
-        return redirect('abilities')->with('flash_message', 'Ability updated!');
+        return $ability;
     }
 
     /**
@@ -131,6 +126,6 @@ class AbilitiesController extends Controller
     {
         Ability::destroy($id);
 
-        return redirect('abilities')->with('flash_message', 'Ability deleted!');
+
     }
 }

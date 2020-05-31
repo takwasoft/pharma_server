@@ -16,10 +16,10 @@ class GroupNamesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
 
-            if ($request->ajax()) {
+
             $data = GroupName::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class GroupNamesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('group-names.index');
+
 
 
     }
@@ -49,7 +47,7 @@ class GroupNamesController extends Controller
      */
     public function create()
     {
-        return view('group-names.create');
+
     }
 
     /**
@@ -65,10 +63,10 @@ class GroupNamesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
-        GroupName::create($requestData);
 
-        return redirect('group-names')->with('flash_message', 'GroupName added!');
+       $groupName= GroupName::create($requestData);
+
+        return response()->json($groupName);
     }
 
     /**
@@ -81,8 +79,8 @@ class GroupNamesController extends Controller
     public function show($id)
     {
         $groupname = GroupName::findOrFail($id);
+        return $groupname;
 
-        return view('group-names.show', compact('groupname'));
     }
 
     /**
@@ -94,9 +92,7 @@ class GroupNamesController extends Controller
      */
     public function edit($id)
     {
-        $groupname = GroupName::findOrFail($id);
 
-        return view('group-names.edit', compact('groupname'));
     }
 
     /**
@@ -113,11 +109,11 @@ class GroupNamesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
+
         $groupname = GroupName::findOrFail($id);
         $groupname->update($requestData);
+        return response()->json($groupname);
 
-        return redirect('group-names')->with('flash_message', 'GroupName updated!');
     }
 
     /**
@@ -131,6 +127,6 @@ class GroupNamesController extends Controller
     {
         GroupName::destroy($id);
 
-        return redirect('group-names')->with('flash_message', 'GroupName deleted!');
+
     }
 }

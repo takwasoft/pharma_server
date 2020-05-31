@@ -19,7 +19,7 @@ class ExpenseTypesController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = ExpenseType::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class ExpenseTypesController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('expense-types.index');
+
 
 
     }
@@ -49,7 +47,7 @@ class ExpenseTypesController extends Controller
      */
     public function create()
     {
-        return view('expense-types.create');
+
     }
 
     /**
@@ -65,10 +63,9 @@ class ExpenseTypesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
-        ExpenseType::create($requestData);
 
-        return redirect('expense-types')->with('flash_message', 'ExpenseType added!');
+       $expensetype= ExpenseType::create($requestData);
+            return $expensetype;
     }
 
     /**
@@ -82,7 +79,7 @@ class ExpenseTypesController extends Controller
     {
         $expensetype = ExpenseType::findOrFail($id);
 
-        return view('expense-types.show', compact('expensetype'));
+        return $expensetype;
     }
 
     /**
@@ -94,9 +91,7 @@ class ExpenseTypesController extends Controller
      */
     public function edit($id)
     {
-        $expensetype = ExpenseType::findOrFail($id);
 
-        return view('expense-types.edit', compact('expensetype'));
     }
 
     /**
@@ -113,11 +108,11 @@ class ExpenseTypesController extends Controller
 			'name' => 'required|max:100'
 		]);
         $requestData = $request->all();
-        
+
         $expensetype = ExpenseType::findOrFail($id);
         $expensetype->update($requestData);
 
-        return redirect('expense-types')->with('flash_message', 'ExpenseType updated!');
+        return $expensetype;
     }
 
     /**

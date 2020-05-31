@@ -19,7 +19,7 @@ class CustomersController extends Controller
     public function index(Request $request)
     {
 
-            if ($request->ajax()) {
+
             $data = Customer::latest()->get();
                 return Datatables::of($data)
                         ->addIndexColumn()
@@ -35,9 +35,7 @@ class CustomersController extends Controller
                         ->escapeColumns([])
                         ->make(true);
 
-                   }
-     
-                    return view('customers.index');
+
 
 
     }
@@ -49,7 +47,7 @@ class CustomersController extends Controller
      */
     public function create()
     {
-        return view('customers.create');
+
     }
 
     /**
@@ -70,9 +68,9 @@ class CustomersController extends Controller
                 ->store('uploads', 'public');
         }
 
-        Customer::create($requestData);
+        $customer=Customer::create($requestData);
 
-        return redirect('customers')->with('flash_message', 'Customer added!');
+        return $customer;
     }
 
     /**
@@ -86,7 +84,7 @@ class CustomersController extends Controller
     {
         $customer = Customer::findOrFail($id);
 
-        return view('customers.show', compact('customer'));
+        return $customer;
     }
 
     /**
@@ -98,9 +96,7 @@ class CustomersController extends Controller
      */
     public function edit($id)
     {
-        $customer = Customer::findOrFail($id);
 
-        return view('customers.edit', compact('customer'));
     }
 
     /**
@@ -125,7 +121,7 @@ class CustomersController extends Controller
         $customer = Customer::findOrFail($id);
         $customer->update($requestData);
 
-        return redirect('customers')->with('flash_message', 'Customer updated!');
+        return $customer;
     }
 
     /**
@@ -139,6 +135,5 @@ class CustomersController extends Controller
     {
         Customer::destroy($id);
 
-        return redirect('customers')->with('flash_message', 'Customer deleted!');
     }
 }
