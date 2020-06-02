@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
     ],
 
@@ -229,8 +230,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
-    'HTML' => Collective\Html\HtmlFacade::class,
-    'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'HTML' => Collective\Html\HtmlFacade::class,
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 

@@ -9,6 +9,7 @@ use App\Manufacturer;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\URL;
+
 class ManufacturersController extends Controller
 {
     /**
@@ -20,26 +21,20 @@ class ManufacturersController extends Controller
     {
 
 
-            $data = Manufacturer::latest()->get();
-                return Datatables::of($data)
-                        ->addIndexColumn()
-                        ->addColumn('action', function($row){
+        $data = Manufacturer::latest()->get();
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
 
-                               $btn = '<div class="btn-group"><a href="'.URL::to('/').'/manufacturers/'.$row->id.'/edit" class="btn btn-sm btn-outline-primary">Edit</a>
-                               <button onclick="deleteData('.$row->id.')" class="btn btn-sm btn-outline-danger">Delete</button></div>';
+                $btn = '<div class="btn-group"><a href="' . URL::to('/') . '/manufacturers/' . $row->id . '/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                               <button onclick="deleteData(' . $row->id . ')" class="btn btn-sm btn-outline-danger">Delete</button></div>';
 
-                                return $btn;
-                        })
+                return $btn;
+            })
 
-                        ->rawColumns(['action'])
-                        ->escapeColumns([])
-                        ->make(true);
-
-
-
-
-
-
+            ->rawColumns(['action'])
+            ->escapeColumns([])
+            ->make(true);
     }
 
     /**
@@ -49,7 +44,6 @@ class ManufacturersController extends Controller
      */
     public function create()
     {
-
     }
 
     /**
@@ -62,15 +56,15 @@ class ManufacturersController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'name' => 'required|max:100'
-		]);
+            'name' => 'required|max:100'
+        ]);
         $requestData = $request->all();
-                if ($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $requestData['image'] = $request->file('image')
                 ->store('uploads', 'public');
         }
 
-        $manufacturer=Manufacturer::create($requestData);
+        $manufacturer = Manufacturer::create($requestData);
 
         return $manufacturer;
     }
@@ -86,7 +80,7 @@ class ManufacturersController extends Controller
     {
         $manufacturer = Manufacturer::findOrFail($id);
 
-            return $manufacturer;
+        return $manufacturer;
     }
 
     /**
@@ -98,7 +92,6 @@ class ManufacturersController extends Controller
      */
     public function edit($id)
     {
-
     }
 
     /**
@@ -112,10 +105,10 @@ class ManufacturersController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-			'name' => 'required|max:100'
-		]);
+            'name' => 'required|max:100'
+        ]);
         $requestData = $request->all();
-                if ($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             $requestData['image'] = $request->file('image')
                 ->store('uploads', 'public');
         }
@@ -136,6 +129,5 @@ class ManufacturersController extends Controller
     public function destroy($id)
     {
         Manufacturer::destroy($id);
-
     }
 }
