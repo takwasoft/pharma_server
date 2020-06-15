@@ -26,8 +26,8 @@ class ManufacturersController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
 
-                $btn = '<div class="btn-group"><a href="' . URL::to('/') . '/manufacturers/' . $row->id . '/edit" class="btn btn-sm btn-outline-primary">Edit</a>
-                               <button onclick="deleteData(' . $row->id . ')" class="btn btn-sm btn-outline-danger">Delete</button></div>';
+                $btn = '<div class="btn-group"><a href="/manufecturar-add?id=' . $row->id . '" class="btn btn-sm btn-outline-primary">Edit</a>
+                <button data-id=' . $row->id . ' id ="delete" class="btn btn-sm btn-outline-danger">Delete</button></div>';
 
                 return $btn;
             })

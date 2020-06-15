@@ -9,6 +9,7 @@ use App\MedicineType;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\URL;
+use Spatie\Searchable\Search;
 
 class MedicineTypesController extends Controller
 {
@@ -22,12 +23,13 @@ class MedicineTypesController extends Controller
 
 
         $data = MedicineType::latest()->get();
+        // return  MedicineType::latest()->get();
         return Datatables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
 
                 $btn = '<div class="btn-group"><a href="medicine-type-add?id=' . $row->id . '" class="btn btn-sm btn-outline-primary">Edit</a>
-                               <button onclick="deleteData(' . $row->id . ')" class="btn btn-sm btn-outline-danger">Delete</button></div>';
+                               <button data-id=' . $row->id . ' id ="delete" class="btn btn-sm btn-outline-danger">Delete</button></div>';
 
                 return $btn;
             })
@@ -42,6 +44,8 @@ class MedicineTypesController extends Controller
      *
      * @return \Illuminate\View\View
      */
+
+
     public function create()
     {
     }
